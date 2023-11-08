@@ -1,11 +1,11 @@
 import httpError from "http-errors";
 
 export class AuthService {
-  async register(data: any) {
+  register(data: any) {
     throw httpError.BadRequest("Method not implemented.");
   }
 
-  async login(data: any) {
+  login(data: any) {
     throw httpError.BadRequest("Method not implemented.");
   }
 }

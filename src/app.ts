@@ -1,10 +1,11 @@
 import helmet from "helmet";
 import express from "express";
 import passport from "passport";
+import httpError from "http-errors";
 import connectDB from "@/config/db";
 import apiRouter from "@/apis/api.router";
 import authRouter from "@/auth/auth.router";
-import { notFound, errorHandler, logError, serverLogs } from "@/middlewares";
+import { errorHandler, logError, serverLogs } from "@/middlewares";
 
 export async function App() {
   // connect database
@@ -25,7 +26,9 @@ export async function App() {
   // api router
   app.use("/api", apiRouter);
   // not found
-  app.use(notFound);
+  app.all("*", (req) => {
+    throw httpError.NotFound(`Cannot ${req.method} ${req.originalUrl}`);
+  });
   // error handler
   app.use(logError);
   app.use(errorHandler);
