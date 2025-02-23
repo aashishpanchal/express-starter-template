@@ -1,25 +1,32 @@
 import cors from 'cors';
+import conf from './conf';
+import express from 'express';
+import apiRoutes from './apis/routes';
 import cookieParser from 'cookie-parser';
-import express, { Express } from 'express';
-import { apiRouter } from './apis/api.router';
-import { errorhandler, logHandler, notFound } from './shared/middlewares';
+import {handler, ApiRes} from 'exutile';
+import {terminalLog} from './middleware/terminal-log';
+import {errorHandler, notFoundError} from './middleware/errors-handler';
 
-export const createApp = async (): Promise<Express> => {
+export const createApp = async () => {
   const app = express();
 
-  // setup middlewares
-  app.use(logHandler()); // Log requests
-  app.use(cookieParser()); // cookies parsers
-  app.use(cors({ origin: '*', credentials: true })); // Cross Origin Resource Sharing (CORS)
-  app.use(express.json({ limit: '30mb' })); // Parse JSON requests
-  app.use(express.urlencoded({ extended: true, limit: '30mb' }));
+  // middleware config
+  app.use(terminalLog());
+  app.use(cookieParser());
+  app.use(cors({origin: conf.CLIENT_URL, credentials: true})); // Cross Origin Resource Sharing (CORS)
+  app.use(express.json({limit: '30mb'})); // Parse JSON requests
+  app.use(express.urlencoded({extended: true, limit: '30mb'}));
 
-  // initialize Routers
-  app.use('/api/v1', apiRouter());
-  app.all('*', notFound);
+  // routes
+  app.all(
+    '/ping',
+    handler(() => ApiRes.ok('Pong')),
+  );
+  app.use('/api/v1', apiRoutes());
 
-  // initialize handling middleware
-  app.use(errorhandler);
+  // error handler
+  app.use(notFoundError);
+  app.use(errorHandler);
 
   return app;
 };

@@ -1,6 +1,3 @@
-// Extend the User interface in the Express namespace
-declare global {
-  namespace Express {
-    
-  }
+declare namespace Express {
+  type User = any;
 }

@@ -1,21 +1,16 @@
-import 'dotenv/config';
-import 'reflect-metadata';
+import conf from './conf';
 import chalk from 'chalk';
-import { createApp } from './app';
-import { config } from './conf/config';
+import {createApp} from './app';
 
 const main = async () => {
-  // Create the Express application
-  const server = await createApp()
-
-  const port = config.PORT;
-  const host = config.HOST;
-
+  // create api server
+  const api = await createApp();
+  // host or port from config
+  const {PORT, HOST} = conf;
   // Start the server
-  server.listen(port, host, () => {
-    const url = `http://${host}:${port}`;
-    const urlWithColor = chalk.cyanBright(url);
-    console.log(`Server listen on ${urlWithColor}\n`);
+  api.listen(PORT, HOST, () => {
+    console.log(chalk.cyanBright(`http://${HOST}:${PORT}`));
+    console.log(`Press CTRL + C to exit.`);
   });
 };
 
