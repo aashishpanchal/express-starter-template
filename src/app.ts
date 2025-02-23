@@ -1,7 +1,7 @@
 import cors from 'cors';
 import conf from './conf';
 import express from 'express';
-import apiRoutes from './apis/routes';
+import appRoutes from './apps/routes';
 import cookieParser from 'cookie-parser';
 import {handler, ApiRes} from 'exutile';
 import {terminalLog} from './middleware/terminal-log';
@@ -17,12 +17,12 @@ export const createApp = async () => {
   app.use(express.json({limit: '30mb'})); // Parse JSON requests
   app.use(express.urlencoded({extended: true, limit: '30mb'}));
 
-  // routes
+  // Routes
+  app.use('/', appRoutes());
   app.all(
     '/ping',
     handler(() => ApiRes.ok('Pong')),
   );
-  app.use('/api/v1', apiRoutes());
 
   // error handler
   app.use(notFoundError);
