@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import ansis from 'ansis';
 import morgan from 'morgan';
 import logger from '@/logger';
 
@@ -9,16 +9,16 @@ morgan.token('status', (_, res) => {
 
   let colorFn;
   if (isBetween(100, 200))
-    colorFn = chalk.blue; // Blue for informational responses
+    colorFn = ansis.blue; // Blue for informational responses
   else if (isBetween(200, 300))
-    colorFn = chalk.green; // Green for success responses
+    colorFn = ansis.green; // Green for success responses
   else if (isBetween(300, 400))
-    colorFn = chalk.yellow; // yellow for redirection responses
-  else colorFn = chalk.red; // Red for server error responses
+    colorFn = ansis.yellow; // yellow for redirection responses
+  else colorFn = ansis.red; // Red for server error responses
   return colorFn(status);
 });
 
-const FORMAT = `:remote-addr - "${chalk.bold(':method :url HTTP/:http-version')}" :status - :response-time ms`;
+const FORMAT = `:remote-addr - "${ansis.bold(':method :url HTTP/:http-version')}" :status - :response-time ms`;
 
 export const terminalLog = () =>
   morgan(FORMAT, {stream: {write: message => logger.info(message.trim())}});

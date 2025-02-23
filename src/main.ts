@@ -1,5 +1,5 @@
 import conf from './conf';
-import chalk from 'chalk';
+import ansis from 'ansis';
 import {createApp} from './app';
 
 const main = async () => {
@@ -9,7 +9,7 @@ const main = async () => {
   const {PORT, HOST} = conf;
   // Start the server
   api.listen(PORT, HOST, () => {
-    console.log(chalk.cyanBright(`http://${HOST}:${PORT}`));
+    console.log(ansis.cyanBright(`http://${HOST}:${PORT}`));
     console.log(`Press CTRL + C to exit.`);
   });
 };

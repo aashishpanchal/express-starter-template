@@ -1,13 +1,13 @@
-import chalk from 'chalk';
+import ansis from 'ansis';
 import {format, Logform} from 'winston';
 
 // Colors Text
 const Color: Record<string, (text: string) => string> = {
-  info: chalk.green,
-  error: chalk.red,
-  warn: chalk.yellow,
-  debug: chalk.magentaBright,
-  verbose: chalk.cyanBright,
+  info: ansis.green,
+  error: ansis.red,
+  warn: ansis.yellow,
+  debug: ansis.magentaBright,
+  verbose: ansis.cyanBright,
 };
 
 /** Error Logs */
